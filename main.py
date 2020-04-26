@@ -5,6 +5,9 @@ from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import pickle
 import csv
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
 
 nltk.download('punkt')
 nltk.download('stopwords')
@@ -153,7 +156,7 @@ least_common_abstract = read_findings_from_files('least_common_abstract_words.cs
 most_common_title = read_findings_from_files('most_common_title_words.csv', 'most_common_title_numbers.csv')
 least_common_title = read_findings_from_files('least_common_title_words.csv', 'least_common_title_numbers.csv')
 
-print("Most common words from abstract:")	
+print("Most common words from abstract:")
 print(len(most_common_abstract), most_common_abstract[:10])
 
 print("Most common words from title:")
@@ -164,3 +167,36 @@ print(len(least_common_abstract), least_common_abstract[:10])
 
 print("Least common words from title:")
 print(len(least_common_title), least_common_title[:10])
+
+def plot_bar_graph(which="abstract", mode="most", limit=1000):
+	title = ""
+	if (mode == "most" and which == "abstract"):
+		words = [item[0] for item in most_common_abstract[:limit]]
+		frequencies = [item[1] for item in most_common_abstract[:limit]]
+		title = "Most Common Abstract Words"
+
+	elif (mode == "least" and which == "abstract"):
+		words = [item[0] for item in least_common_abstract[:limit]]
+		frequencies = [item[1] for item in least_common_abstract[:limit]]
+		title = "Least Common Abstract Words"
+		
+	elif (mode == "most" and which == "title"):
+		words = [item[0] for item in most_common_title[:limit]]
+		frequencies = [item[1] for item in most_common_title[:limit]]
+		title = "Most Common Title Words"
+	
+	elif (mode == "least" and which == "title"):
+		words = [item[0] for item in least_common_title[:limit]]
+		frequencies = [item[1] for item in least_common_title[:limit]]
+		title = "Least Common Title Words"
+		
+	plt.bar(words, frequencies)
+	plt.xlabel('Words', fontsize=12)
+	plt.ylabel('Frequencies', fontsize=12)
+	plt.title(title)
+	plt.show()
+
+plot_bar_graph(which="abstract", mode="most")
+plot_bar_graph(which="abstract", mode="least")
+plot_bar_graph(which="title", mode="most")
+plot_bar_graph(which="title", mode="least")
